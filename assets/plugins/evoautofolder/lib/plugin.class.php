@@ -61,11 +61,11 @@ OUT;
     }
 
     public function setFolder($dir) {
-        if (!$this->fs->checkDir($dir)) $this->fs->makeDir('assets/images/'.$dir);
+        if (!$this->fs->checkDir($dir)) $this->fs->makeDir('assets/'.$this->params['upload_Dir'].'/'.$dir);
         if (!empty($_SESSION['KCFINDER'])) {
-            $_SESSION['KCFINDER']['dir'] = 'images/'.$dir;
+            $_SESSION['KCFINDER']['dir'] = $this->params['upload_Dir'].'/'.$dir;
         } else {
-            $_SESSION['dir'] = 'images/'.$dir;
+            $_SESSION['dir'] = $this->params['upload_Dir'].'/'.$dir;
         }
     }
 
@@ -90,7 +90,7 @@ OUT;
 
     public function updateResource($id,$tempDir) {
         include_once(MODX_BASE_PATH.'assets/lib/MODxAPI/modResource.php');
-        @rename(MODX_BASE_PATH.'assets/images/'.$tempDir,MODX_BASE_PATH.'assets/images/'.$this->params['contentDir'].'/'.$id);
+        @rename(MODX_BASE_PATH.'assets/'.$this->params['upload_Dir'].'/'.$tempDir,MODX_BASE_PATH.'assets/'.$this->params['upload_Dir'].'/'.$this->params['contentDir'].'/'.$id);
         $doc = new \modResource($this->modx);
         $fields = $doc->edit($id)->toArray();
         foreach ($fields as &$field) {
@@ -105,7 +105,7 @@ OUT;
         $sql = "SELECT `temp_dir` FROM {$this->_table} WHERE `temp_id`<{$lifetime}";
         $res = $this->modx->db->query($sql);
         while ($row = $this->modx->db->getRow($res)) {
-            $dir = "assets/images/{$row['temp_dir']}";
+            $dir = "assets/{$this->params['upload_Dir']}/{$row['temp_dir']}";
             $this->fs->rmDir($dir);
         }
         $sql = "DELETE FROM {$this->_table} WHERE `temp_id`<{$lifetime}";
@@ -122,7 +122,7 @@ OUT;
     public function deleteDir() {
         $col = $this->params['ids'];
         for($i = 0; $i < count($col); $i++) {  
-            $rdir = MODX_BASE_PATH . 'assets/images/' . $col[$i];
+            $rdir = MODX_BASE_PATH . 'assets/'.$this->params['upload_Dir'].'/' . $col[$i];
             $this->removeDirectory($rdir);
         } 
     }
