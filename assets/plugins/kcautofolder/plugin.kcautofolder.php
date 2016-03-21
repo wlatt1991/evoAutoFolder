@@ -13,6 +13,12 @@ if ($e->name == 'OnDocFormSave') {
 if ($e->name == 'OnManagerPageInit') {
     $plugin->clearTable();
 }
-if ($e->name == 'OnEmptyTrash') {
+if ($e->name == 'OnBeforeEmptyTrash') {
     $plugin->deleteDir();
+}
+if ($e->name == 'onBeforeMoveDocument') {
+    $plugin->beforeMove();
+}
+if ($e->name == 'onAfterMoveDocument') {
+    $plugin->afterMove();
 }
