@@ -1,11 +1,11 @@
-<?php namespace kcAutoFolder;
+<?php namespace evoAutoFolder;
 require_once (MODX_BASE_PATH . 'assets/lib/Helpers/FS.php');
 class Plugin {
-    public $pluginName = 'kcAutoFolder';
+    public $pluginName = 'evoAutoFolder';
     public $modx = null;
     public $params = array();
     protected $fs = null;
-    public $table = 'kcAutoFolder';
+    public $table = 'evoAutoFolder';
     public $_table = '';
 
     public function __construct($modx) {
@@ -32,7 +32,7 @@ class Plugin {
 CREATE TABLE IF NOT EXISTS {$this->_table} (
 `temp_id` int(10),
 `temp_dir` TEXT NOT NULL default ''
-) ENGINE=MyISAM COMMENT='Datatable for kcAutoFolder plugin.';
+) ENGINE=MyISAM COMMENT='Datatable for evoAutoFolder plugin.';
 OUT;
         return $this->modx->db->query($sql);
     }

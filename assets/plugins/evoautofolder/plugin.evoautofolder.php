@@ -1,8 +1,8 @@
 <?php
 $e = &$modx->event;
-if ($e->activePlugin == 'kcAutoFolder') {
-    include_once(MODX_BASE_PATH.'assets/plugins/kcautofolder/lib/plugin.class.php');
-    $plugin = new \kcAutoFolder\Plugin($modx);
+if ($e->activePlugin == 'evoAutoFolder') {
+    include_once(MODX_BASE_PATH.'assets/plugins/evoautofolder/lib/plugin.class.php');
+    $plugin = new \evoAutoFolder\Plugin($modx);
 }
 if ($e->name == 'OnDocFormRender') {
     $e->output($plugin->render());
