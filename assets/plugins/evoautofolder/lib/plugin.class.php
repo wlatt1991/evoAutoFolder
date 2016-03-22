@@ -69,9 +69,7 @@ OUT;
         if (!empty($_SESSION['KCFINDER'])) {
             $_SESSION['KCFINDER']['browser_dir'] = "assets/uploads/". $dir;
             $_SESSION['KCFINDER']['uploadDir'] = MODX_BASE_PATH."assets/uploads/". $dir;
-            //$_SESSION['KCFINDER']['dir'] = $this->params['upload_Dir'].'/'.$dir;
         } else {
-            //$_SESSION['dir'] = $this->params['upload_Dir'].'/'.$dir;
             $_SESSION['KCFINDER']['browser_dir'] = "assets/uploads/". $dir;
             $_SESSION['KCFINDER']['uploadDir'] = MODX_BASE_PATH."assets/uploads/". $dir;
         }
