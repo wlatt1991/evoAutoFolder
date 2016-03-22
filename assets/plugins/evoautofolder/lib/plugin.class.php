@@ -28,8 +28,10 @@ class Plugin {
         $sql = <<< OUT
 CREATE TABLE IF NOT EXISTS {$this->_table} (
 `temp_id` int,
-`temp_dir` TEXT NOT NULL default ''
-) ENGINE=MyISAM COMMENT='Datatable for evoAutoFolder plugin.';
+`temp_dir` TEXT NOT NULL default '',
+`id` int,
+`move` int
+) ENGINE=MyISAM COMMENT='Datatable for evoAutoFolder plugin';
 OUT;
         return $this->modx->db->query($sql);
     }
@@ -63,12 +65,19 @@ OUT;
         return $tempId;
     }
     public function setFolder($dir) {
-        if (!$this->fs->checkDir($dir)) $this->fs->makeDir('assets/'.$this->params['upload_Dir'].'/'.$dir);
+        if (!$this->fs->checkDir($dir)) $this->fs->makeDir('assets/uploads/'.$dir);
         if (!empty($_SESSION['KCFINDER'])) {
-            $_SESSION['KCFINDER']['dir'] = $this->params['upload_Dir'].'/'.$dir;
+            $_SESSION['KCFINDER']['browser_dir'] = "assets/uploads/". $dir;
+            $_SESSION['KCFINDER']['uploadDir'] = MODX_BASE_PATH."assets/uploads/". $dir;
+            //$_SESSION['KCFINDER']['dir'] = $this->params['upload_Dir'].'/'.$dir;
         } else {
-            $_SESSION['dir'] = $this->params['upload_Dir'].'/'.$dir;
+            //$_SESSION['dir'] = $this->params['upload_Dir'].'/'.$dir;
+            $_SESSION['KCFINDER']['browser_dir'] = "assets/uploads/". $dir;
+            $_SESSION['KCFINDER']['uploadDir'] = MODX_BASE_PATH."assets/uploads/". $dir;
         }
+    }
+    public function setFolderKC() {
+        $this->modx->logEvent(123, 1, 'Клик', 'setFolderKC');
     }
     public function saveTempdir($tempId, $dir, $id=0, $move=0) {
         $tempId = (int)$tempId;
@@ -103,29 +112,28 @@ OUT;
         include_once(MODX_BASE_PATH.'assets/lib/MODxAPI/modResource.php');
         if ($mode == 1) {
             if ($this->params['contentDir'] != '') {
-                @rename(MODX_BASE_PATH.'assets/'.$this->params['upload_Dir'].'/'.$tempDir, MODX_BASE_PATH.'assets/'.$this->params['upload_Dir'].'/'.$this->params['contentDir'].'/'.$id);
+                @rename(MODX_BASE_PATH.'assets/uploads/'.$tempDir, MODX_BASE_PATH.'assets/uploads/'.$this->params['contentDir'].'/'.$id);
                 $doc = new \modResource($this->modx);
                 $fields = $doc->edit($id)->toArray();
                 foreach ($fields as &$field) {
-                    if (is_string($field)) $field = str_replace($tempDir, $this->params['contentDir'].'/'.$id, $field);
+                    if (is_string($field)) $field = str_replace('/'.$tempDir.'/', '/'.$this->params['contentDir'].'/'.$id.'/', $field);
                 }
                 $doc->fromArray($fields)->save(false,true);
             } else {
-                @rename(MODX_BASE_PATH.'assets/'.$this->params['upload_Dir'].'/'.$tempDir, MODX_BASE_PATH.'assets/'.$this->params['upload_Dir'].'/'.$id);
+                @rename(MODX_BASE_PATH.'assets/uploads/'.$tempDir, MODX_BASE_PATH.'assets/uploads/'.$id);
                 $doc = new \modResource($this->modx);
                 $fields = $doc->edit($id)->toArray();
                 foreach ($fields as &$field) {
-                    if (is_string($field)) $field = str_replace($tempDir, $id, $field);
+                    if (is_string($field)) $field = str_replace('/'.$tempDir.'/', '/'.$id.'/', $field);
                 }
                 $doc->fromArray($fields)->save(false,true);
-            }
-            
+            }     
         }
         if ($mode == 0) {
             $doc = new \modResource($this->modx);
             $fields = $doc->edit($id)->toArray();
             foreach ($fields as &$field) {
-                if (is_string($field)) $field = str_replace($tempDir, $this->params['contentDir'],$field);
+                if (is_string($field)) $field = str_replace('/'.$tempDir.'/', '/'.$this->params['contentDir'].'/',$field);
             }
             $doc->fromArray($fields)->save(false,true);
         }
@@ -144,7 +152,7 @@ OUT;
         $sql = "SELECT `temp_dir` FROM {$this->_table} WHERE `temp_id`<{$lifetime}";
         $res = $this->modx->db->query($sql);
         while ($row = $this->modx->db->getRow($res)) {
-            $dir = "assets/{$this->params['upload_Dir']}/{$row['temp_dir']}";
+            $dir = "assets/uploads/{$row['temp_dir']}";
             $this->fs->rmDir($dir);
         }
         $sql = "DELETE FROM {$this->_table} WHERE `temp_id`<{$lifetime}";
@@ -155,10 +163,10 @@ OUT;
         for($i = 0; $i < count($col); $i++) {
             if ($this->ParentDir($col[$i]) != '') {
                 //$this->modx->logEvent(123, 1, 'assets/files/' . $this->ParentDir($col[$i]) . '/' . $col[$i], 'deleteDir');
-                $this->fs->rmDir('assets/'.$this->params['upload_Dir'].'/' . $this->ParentDir($col[$i]) . '/' . $col[$i]);
+                $this->fs->rmDir('assets/uploads/' . $this->ParentDir($col[$i]) . '/' . $col[$i]);
             } else {
                 //$this->modx->logEvent(123, 1, 'assets/files/' . $col[$i], 'deleteDir');
-                $this->fs->rmDir('assets/'.$this->params['upload_Dir'].'/' . $col[$i]);
+                $this->fs->rmDir('assets/uploads/' . $col[$i]);
             }
         }
     }

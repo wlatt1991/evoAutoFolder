@@ -2,13 +2,13 @@
 /**
  * evoAutoFolder
  * 
- * Plugin to create folders named with resource id
+ * Плагин для MODx custom by Dmi3yy
  *
  * @category    plugin
  * @version     0.1
  * @license     http://www.gnu.org/copyleft/gpl.html GNU Public License (GPL)
  * @author      Wlatt (wlatt.ru)
- * @internal    @properties &upload_Dir=Content folder (images or files);text;images/evoautofolder &lifetime=DB records lifetime, hours;text;24
+ * @internal    @properties &lifetime=Время жизни записи в БД в часах;text;24
  * @internal    @events OnDocFormRender, OnDocFormSave, OnManagerPageInit, onBeforeMoveDocument, onAfterMoveDocument, OnBeforeEmptyTrash
  * @internal    @installset base
  */
