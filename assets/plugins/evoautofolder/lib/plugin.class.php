@@ -66,13 +66,8 @@ OUT;
     }
     public function setFolder($dir) {
         if (!$this->fs->checkDir($dir)) $this->fs->makeDir('assets/uploads/'.$dir);
-        if (!empty($_SESSION['KCFINDER'])) {
-            $_SESSION['KCFINDER']['browser_dir'] = "assets/uploads/". $dir;
-            $_SESSION['KCFINDER']['uploadDir'] = MODX_BASE_PATH."assets/uploads/". $dir;
-        } else {
-            $_SESSION['KCFINDER']['browser_dir'] = "assets/uploads/". $dir;
-            $_SESSION['KCFINDER']['uploadDir'] = MODX_BASE_PATH."assets/uploads/". $dir;
-        }
+        $_SESSION['KCFINDER']['browser_dir'] = "assets/uploads/". $dir;
+        $_SESSION['KCFINDER']['uploadDir'] = MODX_BASE_PATH."assets/uploads/". $dir;
     }
     public function setFolderKC() {
         $this->modx->logEvent(123, 1, 'Клик', 'setFolderKC');
@@ -98,12 +93,10 @@ OUT;
             } else {
                 $this->params['contentDir'] = $this->params['id'];
             }
-            //$this->params['contentDir'] = $this->params['contentDir'].'/'.$this->params['id'];
             $ChildIds = $this->modx->getChildIds($this->params['id']);
             foreach ($ChildIds as $Child) {
                 $this->updateResource($Child, $tempDir, 0);
             }
-            //$this->modx->logEvent(123, 1, $sChild, 'deleteTempDir');
         }
     }
     public function updateResource($id,$tempDir, $mode) {
@@ -160,10 +153,8 @@ OUT;
         $col = $this->params['ids'];
         for($i = 0; $i < count($col); $i++) {
             if ($this->ParentDir($col[$i]) != '') {
-                //$this->modx->logEvent(123, 1, 'assets/files/' . $this->ParentDir($col[$i]) . '/' . $col[$i], 'deleteDir');
                 $this->fs->rmDir('assets/uploads/' . $this->ParentDir($col[$i]) . '/' . $col[$i]);
             } else {
-                //$this->modx->logEvent(123, 1, 'assets/files/' . $col[$i], 'deleteDir');
                 $this->fs->rmDir('assets/uploads/' . $col[$i]);
             }
         }
@@ -171,7 +162,6 @@ OUT;
     public function beforeMove() {
         $id_document = $this->params['id_document'];
         $bParentDir = $this->ParentDir($id_document);
-        //$this->modx->logEvent(123, 1, $bParentDir, 'beforeMove');
         $tempId = $this->getTempId();
         if ($bParentDir != '') {
             $tempDir = "{$bParentDir}/{$id_document}";
@@ -183,7 +173,6 @@ OUT;
     public function afterMove() {
         $id_document = $this->params['id_document'];
         $aParentDir = $this->ParentDir($id_document);
-        //$this->modx->logEvent(123, 1, $aParentDir, 'afterMove');
         $sql = "SELECT `temp_dir` FROM {$this->_table} WHERE `id`={$id_document} AND `move`=1";
         $res = $this->modx->db->query($sql);
         $tempDir = $this->modx->db->getValue($res);
@@ -196,11 +185,9 @@ OUT;
         } else {
             $this->params['contentDir'] = $id_document;
         }
-        //$this->params['contentDir'] = $this->params['contentDir'].'/'.$this->params['id'];
         $ChildIds = $this->modx->getChildIds($id_document);
         foreach ($ChildIds as $Child) {
             $this->updateResource($Child, $tempDir, 0);
         }
-        //$this->modx->logEvent(123, 1, $sChild, 'deleteTempDir');
     }
 }
