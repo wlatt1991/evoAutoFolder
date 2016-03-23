@@ -67,7 +67,7 @@
 2. Создать плагин "evoAutoFolder"
 3. На вкладке "Общие" в поле "Код плагина (php)" вставить содержимое файла  'install/assets/plugins/evoautofolder.tpl'
 4. На вкладке "Конфигурация" в поле "Конфигурация плагина" вставить "&lifetime=Время жизни записей в БД в часах;text;24" и нажать на кнопку "Обновить параметры"
-5. На вкладке "Системные события" выбрать события: OnDocFormRender, OnDocFormSave, OnManagerPageInit, onBeforeMoveDocument, onAfterMoveDocument, OnBeforeEmptyTrash
+5. На вкладке "Системные события" выбрать события: OnDocFormRender, OnDocFormSave, OnManagerPageInit, onBeforeMoveDocument, onAfterMoveDocument, OnBeforeEmptyTrash, OnManagerMainFrameHeaderHTMLBlock
 6. Сохранить плагин
 7. Открываем файл 'manager/media/browser/mcpuk/tpl/tpl_javascript.php'
 
