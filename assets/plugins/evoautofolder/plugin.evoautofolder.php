@@ -22,3 +22,6 @@ if ($e->name == 'onBeforeMoveDocument') {
 if ($e->name == 'onAfterMoveDocument') {
     $plugin->afterMove();
 }
+if ($e->name == 'OnManagerMainFrameHeaderHTMLBlock') {
+    $plugin->unsetFolder();
+}

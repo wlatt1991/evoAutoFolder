@@ -66,11 +66,12 @@ OUT;
     }
     public function setFolder($dir) {
         if (!$this->fs->checkDir($dir)) $this->fs->makeDir('assets/uploads/'.$dir);
-        $_SESSION['KCFINDER']['browser_dir'] = "assets/uploads/". $dir;
-        $_SESSION['KCFINDER']['uploadDir'] = MODX_BASE_PATH."assets/uploads/". $dir;
+        $_SESSION['KCFINDER']['browser_dir'] = "uploads/". $dir."/";
+        $_SESSION['KCFINDER']['uploadDir'] = MODX_BASE_PATH."assets/uploads/". $dir."/";
     }
-    public function setFolderKC() {
-        $this->modx->logEvent(123, 1, 'Клик', 'setFolderKC');
+    public function unsetFolder() {
+        $_SESSION['KCFINDER']['browser_dir'] = '';
+        $_SESSION['KCFINDER']['uploadDir'] = '';
     }
     public function saveTempdir($tempId, $dir, $id=0, $move=0) {
         $tempId = (int)$tempId;

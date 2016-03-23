@@ -77,7 +77,7 @@
     
     Заменяем на:
     
-    browser.dir = "<?php echo text::jsValue($_SESSION['KCFINDER']['browser_dir'] ."/". $this->session['dir']) ?>";
+    browser.dir = "<?php echo text::jsValue($_SESSION['KCFINDER']['browser_dir'] . $this->session['dir']) ?>";
     
     Находим строку (у меня 25-я):
     
@@ -85,4 +85,4 @@
     
     Заменяем на:
     
-    browser.thumbsURL = browser.assetsURL + "/<?php echo text::jsValue($_SESSION['KCFINDER']['browser_dir'] ."/". $this->config['thumbsDir']) ?>";
+    browser.thumbsURL = browser.assetsURL + "/<?php echo text::jsValue($_SESSION['KCFINDER']['browser_dir'] . $this->config['thumbsDir']) ?>";
