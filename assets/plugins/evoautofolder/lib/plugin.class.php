@@ -191,4 +191,37 @@ OUT;
             $this->updateResource($Child, $tempDir, 0);
         }
     }
+    public function copyDirectory($old_dir, $new_dir) {
+        $this->fs->makeDir($new_dir);
+        if ($objs = glob($old_dir."/*")) {
+            foreach($objs as $obj) {
+                if (is_dir($obj)) {
+                    $name_dir = str_replace($old_dir . '/', "", $obj);
+                    $this->copyDirectory($old_dir . '/' . $name_dir, $new_dir . '/' . $name_dir);
+                } else {
+                    $name_file = str_replace($old_dir . '/', "", $obj);
+                    $this->fs->copyFile($old_dir . '/' . $name_file, $new_dir . '/' . $name_file);
+                }
+            }
+        }
+    }
+    public function onDuplicate() {
+        $old_id = $this->params['id'];
+        $new_id = $this->params['new_id'];
+        if ($this->ParentDir($old_id) != '') {
+            $old_dir = $this->ParentDir($old_id) . '/' . $old_id;
+            $new_dir = $this->ParentDir($new_id) . '/' . $new_id;
+        } else {
+            $old_dir = $old_id;
+            $new_dir = $new_id;
+        }
+        if ($this->fs->checkDir('assets/uploads/' . $old_dir . '/files')) { $this->copyDirectory(MODX_BASE_PATH . 'assets/uploads/' . $old_dir . '/files', MODX_BASE_PATH . 'assets/uploads/' . $new_dir . '/files'); };
+        if ($this->fs->checkDir('assets/uploads/' . $old_dir . '/images')) { $this->copyDirectory(MODX_BASE_PATH . 'assets/uploads/' . $old_dir . '/images', MODX_BASE_PATH . 'assets/uploads/' . $new_dir . '/images'); };
+        if ($this->fs->checkDir('assets/uploads/' . $old_dir . '/media')) { $this->copyDirectory(MODX_BASE_PATH . 'assets/uploads/' . $old_dir . '/media', MODX_BASE_PATH . 'assets/uploads/' . $new_dir . '/media'); };
+        if ($this->fs->checkDir('assets/uploads/' . $old_dir . '/flash')) { $this->copyDirectory(MODX_BASE_PATH . 'assets/uploads/' . $old_dir . '/flash', MODX_BASE_PATH . 'assets/uploads/' . $new_dir . '/flash'); };
+        if ($this->fs->checkDir('assets/uploads/' . $old_dir . '/.thumbs')) { $this->copyDirectory(MODX_BASE_PATH . 'assets/uploads/' . $old_dir . '/.thumbs', MODX_BASE_PATH . 'assets/uploads/' . $new_dir . '/.thumbs'); };
+        $this->params['contentDir'] = $new_dir;
+        $tempDir = $old_dir;
+        $this->updateResource($new_id, $tempDir, 0);
+    }
 }

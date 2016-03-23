@@ -9,7 +9,7 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU Public License (GPL)
  * @author      Wlatt (wlatt.ru)
  * @internal    @properties &lifetime=Время жизни записи в БД в часах;text;24
- * @internal    @events OnDocFormRender, OnDocFormSave, OnManagerPageInit, onBeforeMoveDocument, onAfterMoveDocument, OnBeforeEmptyTrash, OnManagerMainFrameHeaderHTMLBlock
+ * @internal    @events OnDocFormRender, OnDocFormSave, OnManagerPageInit, onBeforeMoveDocument, onAfterMoveDocument, OnBeforeEmptyTrash, OnManagerMainFrameHeaderHTMLBlock, OnDocDuplicate
  * @internal    @installset base
  */
 

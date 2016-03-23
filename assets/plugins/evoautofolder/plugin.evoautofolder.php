@@ -25,3 +25,6 @@ if ($e->name == 'onAfterMoveDocument') {
 if ($e->name == 'OnManagerMainFrameHeaderHTMLBlock') {
     $plugin->unsetFolder();
 }
+if ($e->name == 'OnDocDuplicate') {
+    $plugin->onDuplicate();
+}
