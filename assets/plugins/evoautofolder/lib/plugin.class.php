@@ -94,9 +94,11 @@ OUT;
             } else {
                 $this->params['contentDir'] = $this->params['id'];
             }
-            $ChildIds = $this->modx->getChildIds($this->params['id']);
-            foreach ($ChildIds as $Child) {
-                $this->updateResource($Child, $tempDir, 0);
+            if ($this->params['contentDir'] != $tempDir) {
+                $ChildIds = $this->modx->getChildIds($this->params['id']);
+                foreach ($ChildIds as $Child) {
+                    $this->updateResource($Child, $tempDir, 0);
+                }
             }
         }
     }
