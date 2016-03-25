@@ -143,11 +143,14 @@ OUT;
     public function clearTable() {
         $lifetime = $this->params['lifetime'] * 60 * 60;
         $lifetime = time() - $lifetime;
-        $sql = "SELECT `temp_dir` FROM {$this->_table} WHERE `temp_id`<{$lifetime}";
+        $sql = "SELECT `temp_dir`,`temp_id` FROM {$this->_table} WHERE `temp_id`<{$lifetime}";
         $res = $this->modx->db->query($sql);
         while ($row = $this->modx->db->getRow($res)) {
-            $dir = "assets/uploads/{$row['temp_dir']}";
-            $this->fs->rmDir($dir);
+            if ($row['temp_id'] == $row['temp_dir']) {
+                $dir = "assets/uploads/{$row['temp_dir']}";
+                $this->fs->rmDir($dir);
+            }
+            //$this->modx->logEvent($row['temp_dir'], 1, 'temp_id: ' . $row['temp_id'] . ' => temp_dir: ' . $row['temp_dir'], 'deleteDir');
         }
         $sql = "DELETE FROM {$this->_table} WHERE `temp_id`<{$lifetime}";
         $res = $this->modx->db->query($sql);
