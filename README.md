@@ -1,6 +1,7 @@
 # evoAutoFolder
 Плагин для MODx custom by Dmi3yy
 
+1
 Текущая версия: evoAutoFolder 0.1
 
 Версия тестировалась на сборке от Dmi3yy MODX EVO 1.1b-d7.1.1
